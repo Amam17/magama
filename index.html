@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magama Restaurant | Authentic Local Dishes in Katsina</title>
+    <meta name="description" content="Magama Restaurant in Katsina - Home of authentic Tuwo Chikafa, Jollof Rice, and local delicacies. Dine-in, takeaway, and delivery. 608+ customers served.">
+    <link rel="canonical" href="https://magamarestaurant.ng/">
+    <meta property="og:title" content="Magama Restaurant | Best Local Dishes in Katsina">
+    <meta property="og:description" content="Experience the rich flavours of Katsina at Magama Restaurant. Order your favourite local dishes today.">
+    <meta property="og:type" content="restaurant">
+    <style>
+        /* ----- RESET & BASE (Warm Terracotta Palette) ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: #15100D;
+            color: #F5EDE8;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ----- LOADER ----- */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #15100D;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease;
+        }
+        #loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #33261F;
+            border-top: 4px solid #D4652C;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ----- STICKY NAV ----- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 14px 0;
+            background: rgba(21, 16, 13, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(212, 101, 44, 0.15);
+            z-index: 1000;
+            transition: background 0.3s;
+        }
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo svg {
+            display: block;
+        }
+        .logo span {
+            color: #D4652C;
+        }
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-links a {
+            color: #F5EDE8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #D4652C;
+        }
+        .nav-cta {
+            background: #D4652C;
+            color: #15100D !important;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .nav-cta:hover {
+            background: #E8894A;
+            transform: scale(1.02);
+            color: #15100D !important;
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            width: 28px;
+            height: 2.5px;
+            background: #F5EDE8;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ----- HERO ----- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 100px 0 60px;
+            background: radial-gradient(circle at 80% 20%, #3A2014, #15100D 80%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            left: -10%;
+            bottom: -20%;
+            width: 50%;
+            height: 70%;
+            background: radial-gradient(ellipse, rgba(212, 101, 44, 0.08), transparent 70%);
+            pointer-events: none;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-content h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero-content h1 span {
+            color: #D4652C;
+        }
+        .hero-content p {
+            font-size: 1.2rem;
+            color: #BFAFA5;
+            max-width: 500px;
+            margin-bottom: 32px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(212, 101, 44, 0.15);
+            padding: 6px 16px;
+            border-radius: 40px;
+            border: 1px solid rgba(212, 101, 44, 0.30);
+            font-size: 0.9rem;
+            color: #D4652C;
+            margin-bottom: 20px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            background: #D4652C;
+            color: #15100D;
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-primary:hover {
+            background: #E8894A;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: #F5EDE8;
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-weight: 600;
+            border: 1.5px solid #5A4A40;
+            transition: border 0.3s, color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-secondary:hover {
+            border-color: #D4652C;
+            color: #D4652C;
+        }
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero-image .placeholder-img {
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1/1;
+            background: linear-gradient(145deg, #2C1E16, #1A1410);
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #3D2E26;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+            text-align: center;
+            padding: 30px;
+            gap: 12px;
+            color: #8A7A6E;
+        }
+        .placeholder-img .food-icon-text {
+            font-size: 1.4rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: #D4652C;
+        }
+
+        /* ----- SECTION COMMON ----- */
+        section {
+            padding: 80px 0;
+        }
+        .section-title {
+            font-size: 2.6rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .section-title span {
+            color: #D4652C;
+        }
+        .section-sub {
+            color: #A89486;
+            max-width: 600px;
+            margin-bottom: 48px;
+        }
+        .center-text {
+            text-align: center;
+        }
+        .center-text .section-sub {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ----- ABOUT ----- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .about-text p {
+            color: #BFAFA5;
+            margin-bottom: 16px;
+        }
+        .about-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 24px;
+        }
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #D4652C;
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: #A89486;
+        }
+
+        /* ----- MENU / SERVICES ----- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+        }
+        .menu-card {
+            background: #1A1410;
+            padding: 28px 24px;
+            border-radius: 20px;
+            border: 1px solid #2C1E16;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+        .menu-card:hover {
+            transform: translateY(-6px);
+            border-color: #D4652C;
+            box-shadow: 0 12px 30px rgba(212, 101, 44, 0.08);
+        }
+        .menu-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 6px;
+        }
+        .menu-card .price {
+            color: #D4652C;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .menu-card .desc {
+            color: #A89486;
+            margin: 10px 0 16px;
+            font-size: 0.95rem;
+        }
+        .menu-card .whatsapp-order {
+            background: #25D366;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.3s;
+            text-decoration: none;
+        }
+        .menu-card .whatsapp-order:hover {
+            opacity: 0.85;
+        }
+
+        /* ----- WHY CHOOSE US ----- */
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        .why-item {
+            text-align: center;
+            padding: 24px 16px;
+            background: #1A1410;
+            border-radius: 20px;
+            border: 1px solid #2C1E16;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .why-item:hover {
+            border-color: #D4652C;
+            transform: translateY(-4px);
+        }
+        .why-item .icon-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            width: 48px;
+            height: 48px;
+        }
+        .why-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+        .why-item p {
+            color: #A89486;
+            font-size: 0.95rem;
+        }
+
+        /* ----- TESTIMONIALS ----- */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .testimonial-card {
+            background: #1A1410;
+            padding: 28px 24px;
+            border-radius: 20px;
+            border: 1px solid #2C1E16;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            border-color: #D4652C;
+        }
+        .testimonial-card .stars {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+        .testimonial-card blockquote {
+            font-style: italic;
+            color: #E0D6CE;
+            margin: 12px 0;
+        }
+        .testimonial-card cite {
+            font-style: normal;
+            color: #A89486;
+            font-size: 0.9rem;
+        }
+
+        /* ----- PROCESS ----- */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 24px;
+            counter-reset: step;
+        }
+        .step {
+            text-align: center;
+            padding: 20px;
+            background: #1A1410;
+            border-radius: 20px;
+            border: 1px solid #2C1E16;
+            position: relative;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .step:hover {
+            transform: translateY(-4px);
+            border-color: #D4652C;
+        }
+        .step .num {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #D4652C;
+            opacity: 0.4;
+            line-height: 1;
+        }
+        .step h4 {
+            margin: 8px 0 4px;
+        }
+        .step p {
+            color: #A89486;
+            font-size: 0.9rem;
+        }
+
+        /* ----- FAQ ----- */
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            background: #1A1410;
+            margin-bottom: 12px;
+            border-radius: 14px;
+            border: 1px solid #2C1E16;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+        .faq-item:hover {
+            border-color: #D4652C;
+        }
+        .faq-question {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 20px 24px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #F5EDE8;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .faq-question:hover {
+            background: #1F1815;
+        }
+        .faq-question .arrow {
+            transition: transform 0.3s;
+            display: inline-flex;
+        }
+        .faq-item.active .faq-question .arrow {
+            transform: rotate(180deg);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s;
+            padding: 0 24px;
+            color: #BFAFA5;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding: 0 24px 20px;
+        }
+
+        /* ----- GALLERY ----- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .gallery-item {
+            aspect-ratio: 1/1;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #3D2E26;
+            transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+        }
+        .gallery-item:hover {
+            transform: scale(1.03);
+            border-color: #D4652C;
+            box-shadow: 0 8px 25px rgba(212, 101, 44, 0.15);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 16px;
+        }
+
+        /* ----- CONTACT ----- */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+        .contact-info p {
+            color: #BFAFA5;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .contact-info .label {
+            font-weight: 600;
+            color: #F5EDE8;
+            min-width: 70px;
+        }
+        .contact-info .icon-wrap {
+            display: inline-flex;
+            width: 24px;
+            flex-shrink: 0;
+        }
+        .contact-info a {
+            color: #D4652C;
+            text-decoration: none;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            background: #1A1410;
+            border: 1px solid #2C1E16;
+            border-radius: 12px;
+            color: #F5EDE8;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #D4652C;
+        }
+        .contact-form textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+        .contact-form button {
+            background: #D4652C;
+            color: #15100D;
+            border: none;
+            padding: 14px 34px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .contact-form button:hover {
+            background: #E8894A;
+        }
+        .map-placeholder {
+            width: 100%;
+            height: 280px;
+            background: #1A1410;
+            border-radius: 20px;
+            border: 1px solid #2C1E16;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6A5A4E;
+            margin-top: 24px;
+            font-size: 0.9rem;
+        }
+
+        /* ----- FOOTER ----- */
+        footer {
+            background: #15100D;
+            border-top: 1px solid #1F1815;
+            padding: 40px 0 24px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .footer-grid h4 {
+            color: #D4652C;
+            margin-bottom: 12px;
+        }
+        .footer-grid p,
+        .footer-grid a {
+            color: #A89486;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .footer-grid a:hover {
+            color: #D4652C;
+        }
+        .copyright {
+            text-align: center;
+            color: #5A4A40;
+            font-size: 0.9rem;
+            border-top: 1px solid #1F1815;
+            padding-top: 20px;
+        }
+
+        /* ----- FLOATING WHATSAPP ----- */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #25D366;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 32px rgba(37, 211, 102, 0.5);
+        }
+
+        /* ----- BACK TO TOP ----- */
+        .back-top {
+            position: fixed;
+            bottom: 100px;
+            right: 24px;
+            background: #D4652C;
+            color: #15100D;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s, box-shadow 0.3s;
+            z-index: 998;
+            box-shadow: 0 4px 16px rgba(212, 101, 44, 0.3);
+        }
+        .back-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-top:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(212, 101, 44, 0.4);
+        }
+
+        /* ----- SCROLL REVEAL ----- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered delays */
+        .menu-card:nth-child(1) { transition-delay: 0.05s; }
+        .menu-card:nth-child(2) { transition-delay: 0.10s; }
+        .menu-card:nth-child(3) { transition-delay: 0.15s; }
+        .menu-card:nth-child(4) { transition-delay: 0.20s; }
+        .menu-card:nth-child(5) { transition-delay: 0.25s; }
+        .menu-card:nth-child(6) { transition-delay: 0.30s; }
+
+        .gallery-item:nth-child(1) { transition-delay: 0.05s; }
+        .gallery-item:nth-child(2) { transition-delay: 0.10s; }
+        .gallery-item:nth-child(3) { transition-delay: 0.15s; }
+        .gallery-item:nth-child(4) { transition-delay: 0.20s; }
+        .gallery-item:nth-child(5) { transition-delay: 0.25s; }
+        .gallery-item:nth-child(6) { transition-delay: 0.30s; }
+
+        .why-item:nth-child(1) { transition-delay: 0.05s; }
+        .why-item:nth-child(2) { transition-delay: 0.10s; }
+        .why-item:nth-child(3) { transition-delay: 0.15s; }
+        .why-item:nth-child(4) { transition-delay: 0.20s; }
+
+        .testimonial-card:nth-child(1) { transition-delay: 0.05s; }
+        .testimonial-card:nth-child(2) { transition-delay: 0.10s; }
+        .testimonial-card:nth-child(3) { transition-delay: 0.15s; }
+
+        .step:nth-child(1) { transition-delay: 0.05s; }
+        .step:nth-child(2) { transition-delay: 0.10s; }
+        .step:nth-child(3) { transition-delay: 0.15s; }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 992px) {
+            .hero-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2.8rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background: #15100D;
+                padding: 20px 0;
+                gap: 16px;
+                border-top: 1px solid #2C1E16;
+                margin-top: 12px;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .hero-content h1 { font-size: 2.2rem; }
+            .section-title { font-size: 2rem; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .btn-group .btn-primary, .btn-group .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+            .about-stats { flex-wrap: wrap; gap: 20px; }
+            .whatsapp-float { width: 54px; height: 54px; }
+            .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+        }
+        @media (max-width: 480px) {
+            .container { padding: 0 16px; }
+            .hero { padding: 80px 0 40px; }
+            .hero-content h1 { font-size: 1.8rem; }
+            .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div id="loader"><div class="loader-spinner"></div></div>
+
+    <!-- STICKY NAV -->
+    <nav id="navbar" role="navigation">
+        <div class="container nav-container">
+            <div class="logo">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 3v9a3 3 0 0 0 3 3h1"/>
+                    <path d="M18 3v12a3 3 0 0 1-3 3h-1v-4"/>
+                    <path d="M10 15V3"/>
+                    <path d="M14 15V3"/>
+                </svg>
+                Magama <span>Restaurant</span>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">About</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact" class="nav-cta">Order Now</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C" stroke="none"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                    3.7 / 5 · 608+ Reviews
+                </div>
+                <h1>Katsina's Home of <span>Authentic Local</span> Delicacies</h1>
+                <p>From our legendary Tuwo Chikafa to sizzling Jollof Rice, we bring the true taste of Katsina to your table. Dine in, take away, or order delivery.</p>
+                <div class="btn-group">
+                    <a href="https://wa.me/2347038960065?text=Hello%20Magama%20Restaurant!%20I%20want%20to%20place%20an%20order." target="_blank" class="btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Order via WhatsApp
+                    </a>
+                    <a href="#menu" class="btn-secondary">View Menu</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="placeholder-img">
+                    <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="8"/>
+                        <path d="M4 4 L8 8 M20 4 L16 8 M4 20 L8 16 M20 20 L16 16"/>
+                        <path d="M9 9 L11 11 M13 13 L15 15"/>
+                    </svg>
+                    <div class="food-icon-text">TUWO CHIKAFA</div>
+                    <p style="color:#D4652C;">Our signature dish</p>
+                    <p style="color:#6A5A4E; font-size:0.85rem;">Prepared fresh daily</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="container about-grid reveal">
+            <div class="about-text">
+                <h2 class="section-title">About <span>Magama</span></h2>
+                <p>Magama Restaurant has been a cornerstone of Katsina's culinary scene for years, serving generations of families with our signature local dishes. We take pride in our rich, flavourful meals that celebrate the best of Northern Nigerian cuisine.</p>
+                <p>Our kitchen is led by experienced chefs who pour their heart into every pot of soup and every grain of rice. We believe great food brings people together, and we're honoured to be part of your dining moments.</p>
+                <div class="about-stats">
+                    <div><div class="stat-number">608+</div><div class="stat-label">Customers Served</div></div>
+                    <div><div class="stat-number">3.7</div><div class="stat-label">Google Rating</div></div>
+                    <div><div class="stat-number">Est. 2010</div><div class="stat-label">Years of Service</div></div>
+                </div>
+            </div>
+            <div style="background:#1A1410; border-radius:24px; padding:30px; border:1px solid #2C1E16; text-align:center; display:flex; flex-direction:column; align-items:center; gap:16px;">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 21h8M12 21v-5M9 16h6M6 16h3M15 16h3M6 16a5 5 0 0 1-1-9.9A6 6 0 0 1 11 2c1.2 0 2.3.4 3.2 1A6 6 0 0 1 19 6.1 5 5 0 0 1 18 16h0z"/>
+                </svg>
+                <p style="color:#A89486;">Where tradition meets the table.<br>Come taste the heritage.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU / SERVICES -->
+    <section id="menu" style="background:#100C0A;">
+        <div class="container">
+            <div class="center-text reveal">
+                <h2 class="section-title">Our <span>Menu</span></h2>
+                <p class="section-sub">Explore our signature dishes — crafted with tradition and love.</p>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-card reveal">
+                    <h3>Tuwo Chikafa</h3>
+                    <div class="price">₦1,500</div>
+                    <div class="desc">Our signature dish — smooth, delicious, and paired with your choice of soup.</div>
+                    <a href="https://wa.me/2347038960065?text=Hello%20Magama%20Restaurant!%20I%20want%20to%20order%20Tuwo%20Chikafa." target="_blank" class="whatsapp-order">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Order Now
+                    </a>
+                </div>
+                <div class="menu-card reveal">
+                    <h3>Jollof Rice with Chicken</h3>
+                    <div class="price">₦2,000</div>
+                    <div class="desc">Classic Nigerian jollof rice, smoky and rich, served with tender chicken.</div>
+                    <a href="https://wa.me/2347038960065?text=Hello%20Magama%20Restaurant!%20I%20want%20to%20order%20Jollof%20Rice%20with%20Chicken." target="_blank" class="whatsapp-order">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Order Now
+                    </a>
+                </div>
+                <div class="menu-card reveal">
+                    <h3>Egusi Soup with Pounded Yam</h3>
+                    <div class="price">₦2,500</div>
+                    <div class="desc">Rich, melon-seed soup with assorted meat, served with smooth pounded yam.</div>
+                    <a href="https://wa.me/2347038960065?text=Hello%20Magama%20Restaurant!%20I%20want%20to%20order%20Egusi%20Soup%20with%20Pounded%20Yam." target="_blank" class="whatsapp-order">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Order Now
+                    </a>
+                </div>
+                <div class="menu-card reveal">
+                    <h3>Grilled Fish &amp; Chips</h3>
+                    <div class="price">₦2,800</div>
+                    <div class="desc">Fresh tilapia grilled to perfection, served with crispy chips and tangy sauce.</div>
+                    <a href="https://wa.me/2347038960065?text=Hello%20Magama%20Restaurant!%20I%20want%20to%20order%20Grilled%20Fish%20%26%20Chips." target="_blank" class="whatsapp-order">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Order Now
+                    </a>
+                </div>
+                <div class="menu-card reveal">
+                    <h3>Miyan Kuka with Tuwo</h3>
+                    <div class="price">₦1,800</div>
+                    <div class="desc">Traditional Northern soup made from baobab leaves, rich in flavour and nutrition.</div>
+                    <a href="https://wa.me/2347038960065?text=Hello%20Magama%20Restaurant!%20I%20want%20to%20order%20Miyan%20Kuka%20with%20Tuwo." target="_blank" class="whatsapp-order">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Order Now
+                    </a>
+                </div>
+                <div class="menu-card reveal">
+                    <h3>Family Platter (for 4)</h3>
+                    <div class="price">₦6,500</div>
+                    <div class="desc">A feast for the family: jollof rice, grilled fish, chicken, chips, and plantains.</div>
+                    <a href="https://wa.me/2347038960065?text=Hello%20Magama%20Restaurant!%20I%20want%20to%20order%20the%20Family%20Platter." target="_blank" class="whatsapp-order">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Order Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section id="why">
+        <div class="container">
+            <div class="center-text reveal">
+                <h2 class="section-title">Why <span>Choose Us</span></h2>
+                <p class="section-sub">We've been serving Katsina for years — here's why we remain a favourite.</p>
+            </div>
+            <div class="why-grid">
+                <div class="why-item reveal">
+                    <span class="icon-wrap">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v7M12 9a5 5 0 0 1-5-5v2a5 5 0 0 0 5 5zM12 9a5 5 0 0 0 5-5v2a5 5 0 0 1-5 5z"/>
+                        </svg>
+                    </span>
+                    <h4>Authentic Local Recipes</h4>
+                    <p>We honour Northern Nigerian culinary traditions with every dish we serve.</p>
+                </div>
+                <div class="why-item reveal">
+                    <span class="icon-wrap">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 21h8M12 21v-5M9 16h6M6 16h3M15 16h3M6 16a5 5 0 0 1-1-9.9A6 6 0 0 1 11 2c1.2 0 2.3.4 3.2 1A6 6 0 0 1 19 6.1 5 5 0 0 1 18 16h0z"/>
+                        </svg>
+                    </span>
+                    <h4>Experienced Chefs</h4>
+                    <p>Our kitchen team brings decades of combined experience in local cuisine.</p>
+                </div>
+                <div class="why-item reveal">
+                    <span class="icon-wrap">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L4 5v7a8 8 0 0 0 8 8 8 8 0 0 0 8-8V5l-8-3z"/>
+                            <path d="M9 12l2 2 4-4"/>
+                        </svg>
+                    </span>
+                    <h4>608+ Happy Diners</h4>
+                    <p>Our growing community of customers trust us for quality and taste.</p>
+                </div>
+                <div class="why-item reveal">
+                    <span class="icon-wrap">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12l9-9 9 9"/>
+                            <path d="M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10"/>
+                            <path d="M9 21V13h6v8"/>
+                        </svg>
+                    </span>
+                    <h4>Warm, Welcoming Space</h4>
+                    <p>Enjoy your meal in a comfortable environment designed for families and friends.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" style="background:#100C0A;">
+        <div class="container">
+            <div class="center-text reveal">
+                <h2 class="section-title">What Our <span>Customers</span> Say</h2>
+                <p class="section-sub">Real feedback from the people who know us best.</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card reveal">
+                    <div class="stars">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5A4A40" stroke-width="2"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                    </div>
+                    <blockquote>"I don't personally like the environment but it's a good restaurant though. The food is consistently delicious."</blockquote>
+                    <cite>— Ismail U. (Google Review)</cite>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="stars">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                    </div>
+                    <blockquote>"Nice one. The local dishes are always fresh and the service is friendly. Highly recommended."</blockquote>
+                    <cite>— Visitor Update (Google)</cite>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="stars">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4652C"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                    </div>
+                    <blockquote>"A good restaurant with amazing Tuwo Chikafa. Worth every visit."</blockquote>
+                    <cite>— Regular Customer (Google Review)</cite>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section id="process">
+        <div class="container">
+            <div class="center-text reveal">
+                <h2 class="section-title">How to <span>Order</span></h2>
+                <p class="section-sub">Three simple steps to enjoy our delicious meals from the comfort of your home.</p>
+            </div>
+            <div class="process-steps">
+                <div class="step reveal"><div class="num">1</div><h4>Choose</h4><p>Browse our menu and pick your favourite dishes.</p></div>
+                <div class="step reveal"><div class="num">2</div><h4>Order via WhatsApp</h4><p>Click the WhatsApp button and tell us your order.</p></div>
+                <div class="step reveal"><div class="num">3</div><h4>Enjoy</h4><p>We prepare fresh and deliver to your doorstep or you pick up.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" style="background:#100C0A;">
+        <div class="container">
+            <div class="center-text reveal">
+                <h2 class="section-title">Photo <span>Gallery</span></h2>
+                <p class="section-sub">A glimpse into our world of flavour.</p>
+            </div>
+            <div class="gallery-grid">
+                <!-- Replace the src URLs with your actual image paths -->
+                <div class="gallery-item reveal">
+                    <img src="images/tuwo.jpg" alt="Tuwo Chikafa served with soup">
+                </div>
+                <div class="gallery-item reveal">
+                    <img src="images/jollof.jpg" alt="Jollof rice with chicken">
+                </div>
+                <div class="gallery-item reveal">
+                    <img src="images/egusi.jpg" alt="Egusi soup with pounded yam">
+                </div>
+                <div class="gallery-item reveal">
+                    <img src="images/grilled.jpg" alt="Grilled fish with chips">
+                </div>
+                <div class="gallery-item reveal">
+                    <img src="images/kuka.jpg" alt="Miyan Kuka with tuwo">
+                </div>
+                <div class="gallery-item reveal">
+                    <img src="images/family.jpg" alt="Family platter with assorted dishes">
+                </div>
+            </div>
+            <p style="text-align:center; color:#6A5A4E; font-size:0.85rem; margin-top:16px;">
+                Replace the placeholder images above with your own photos. Place them in an 'images' folder and update the 'src' attributes.
+            </p>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="container reveal">
+            <div class="center-text">
+                <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">Do you offer delivery? <span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+                    <div class="faq-answer">Yes, we offer delivery within Katsina. Simply place your order via WhatsApp and we'll arrange delivery to your location.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">What are your opening hours? <span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+                    <div class="faq-answer">We are open daily from 9:00 AM to 11:00 PM. We're here to serve you from morning till late night.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Do you cater for events? <span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+                    <div class="faq-answer">Absolutely! We offer catering services for parties, meetings, and private events. Contact us for a custom quote.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Is your food halal? <span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+                    <div class="faq-answer">Yes, all our meat is sourced from certified halal suppliers. We respect dietary needs and preferences.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" style="background:#100C0A;">
+        <div class="container reveal">
+            <div class="center-text">
+                <h2 class="section-title">Get in <span>Touch</span></h2>
+                <p class="section-sub">We'd love to hear from you. Reach out for orders, reservations, or inquiries.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <p>
+                        <span class="icon-wrap">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="1.8"><circle cx="12" cy="10" r="3"/><path d="M12 22c4-4 8-7.5 8-12a8 8 0 0 0-16 0c0 4.5 4 8 8 12z"/></svg>
+                        </span>
+                        <span class="label">Address</span> Yahaya Madaki Wy, Katsina 820101
+                    </p>
+                    <p>
+                        <span class="icon-wrap">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </span>
+                        <span class="label">Phone</span> <a href="tel:+2347038960065">0703 896 0065</a>
+                    </p>
+                    <p>
+                        <span class="icon-wrap">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </span>
+                        <span class="label">Hours</span> Mon–Sun: 9:00 AM – 11:00 PM
+                    </p>
+                    <p>
+                        <span class="icon-wrap">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4652C" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+                        </span>
+                        <span class="label">Email</span> <a href="mailto:info@magamarestaurant.ng">info@magamarestaurant.ng</a>
+                    </p>
+                    <div style="margin-top:20px;">
+                        <a href="https://wa.me/2347038960065" target="_blank" style="background:#25D366; padding:12px 28px; border-radius:40px; display:inline-flex; align-items:center; gap:10px; color:#fff; font-weight:600; text-decoration:none;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            Chat on WhatsApp
+                        </a>
+                    </div>
+                    <div class="map-placeholder">
+                       <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d497649.82538277586!2d6.972349089062502!3d12.978934100000014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x11b02353246d6609%3A0x1bed445aec52626!2sMagama%20Restaurant!5e0!3m2!1sen!2sng!4v1782891265993!5m2!1sen!2sng" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                    </div>
+                </div>
+                <div>
+                    <form class="contact-form" id="contactForm" onsubmit="event.preventDefault(); alert('Thank you! We will get back to you shortly.');">
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Your Email" required>
+                        <input type="tel" placeholder="Your Phone" required>
+                        <textarea placeholder="Your Message (e.g., order, catering, inquiry)" required></textarea>
+                        <button type="submit">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>Magama Restaurant</h4>
+                    <p>Your favourite spot for authentic local dishes in Katsina. Quality, tradition, and warmth — always on the menu.</p>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <a href="#about">About</a>
+                    <a href="#menu">Menu</a>
+                    <a href="#gallery">Gallery</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <a href="tel:+2347038960065">0703 896 0065</a>
+                    <a href="https://wa.me/2347038960065" target="_blank">WhatsApp</a>
+                    <a href="mailto:info@magamarestaurant.ng">info@magamarestaurant.ng</a>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 Magama Restaurant. All rights reserved. Built with care in Katsina.
+            </div>
+        </div>
+    </footer>
+
+    <!-- FLOATING WHATSAPP -->
+    <a href="https://wa.me/2347038960065?text=Hello%20Magama%20Restaurant!%20I%20want%20to%20place%20an%20order." target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+
+    <!-- BACK TO TOP -->
+    <a href="#" class="back-top" id="backTop" aria-label="Back to top">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+    </a>
+
+    <script>
+        // ----- LOADER -----
+        window.addEventListener('load', () => {
+            document.getElementById('loader').classList.add('hidden');
+        });
+
+        // ----- HAMBURGER -----
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // ----- SCROLL REVEAL -----
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -30px 0px'
+        });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ----- FAQ ACCORDION -----
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const btn = item.querySelector('.faq-question');
+            btn.addEventListener('click', () => {
+                faqItems.forEach(other => {
+                    if (other !== item) other.classList.remove('active');
+                });
+                item.classList.toggle('active');
+            });
+        });
+        if (faqItems.length) faqItems[0].classList.add('active');
+
+        // ----- BACK TO TOP -----
+        const backTop = document.getElementById('backTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                backTop.classList.add('visible');
+            } else {
+                backTop.classList.remove('visible');
+            }
+        });
+        backTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ----- SCROLL SPY -----
+        const sections = document.querySelectorAll('section[id]');
+        const navLinkItems = document.querySelectorAll('.nav-links a:not(.nav-cta)');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 130;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinkItems.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // ----- SMOOTH SCROLL -----
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
